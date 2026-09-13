@@ -1004,3 +1004,32 @@ body { overflow: hidden; }
 @media (max-width: 760px) {
   .gate-card { width: 100%; border-radius: 18px; padding: 20px 14px; }
 }
+
+.gate {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  overflow: auto;
+}
+.gate-card {
+  width: min(420px, 100%);
+  max-width: 100%;
+  padding: 20px 16px;
+  border-radius: 18px;
+  box-sizing: border-box;
+}
+.gate-form input {
+  width: 100%;
+  margin-top: 8px;
+  box-sizing: border-box;
+}
+.gate-form button { width: 100%; }
+.google-slot { width: 100%; display: flex; justify-content: center; margin-top: 12px; }
+#google-oauth-link { display: block; width: 100%; text-align: center; }
+@media (max-width: 760px) {
+  .gate { align-items: start; padding-top: 24px; }
+  .gate-card { width: 100%; }
+  .gate-card h1 { font-size: 22px; }
+  .gate-logo { width: 64px; height: 64px; }
+}

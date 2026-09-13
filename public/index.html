@@ -20,13 +20,14 @@
       <p class="brand-kicker">FT</p>
       <h1>FT Chat</h1>
       <p>Bola no logo, chat rápido, rádio PTT/LoRa e criptografia E2E.</p>
-      <form id="register-form">
+      <form id="register-form" class="gate-form">
         <label for="reg-name">Cadastrar</label>
         <input id="reg-name" maxlength="24" autocomplete="username" placeholder="Usuario" required />
         <input id="reg-pass" type="password" minlength="6" autocomplete="new-password" placeholder="Senha (min. 6)" required />
+        <input id="reg-pass2" type="password" minlength="6" autocomplete="new-password" placeholder="Confirmar senha" required />
         <button type="submit">Criar conta</button>
       </form>
-      <form id="join-form">
+      <form id="join-form" class="gate-form">
         <label for="name-input">Ja tenho conta</label>
         <input id="name-input" maxlength="24" autocomplete="username" placeholder="Usuario" required />
         <input id="login-pass" type="password" autocomplete="current-password" placeholder="Senha" required />
@@ -287,4 +288,5 @@
   <script src="/app.js"></script>
 </body>
 </html>
+
 

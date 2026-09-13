@@ -20,9 +20,16 @@
       <p class="brand-kicker">FT</p>
       <h1>FT Chat</h1>
       <p>Bola no logo, chat rápido, rádio PTT/LoRa e criptografia E2E.</p>
+      <form id="register-form">
+        <label for="reg-name">Cadastrar</label>
+        <input id="reg-name" maxlength="24" autocomplete="username" placeholder="Usuario" required />
+        <input id="reg-pass" type="password" minlength="6" autocomplete="new-password" placeholder="Senha (min. 6)" required />
+        <button type="submit">Criar conta</button>
+      </form>
       <form id="join-form">
-        <label for="name-input">Seu nome</label>
-        <input id="name-input" maxlength="24" autocomplete="nickname" placeholder="Como você quer aparecer" required />
+        <label for="name-input">Ja tenho conta</label>
+        <input id="name-input" maxlength="24" autocomplete="username" placeholder="Usuario" required />
+        <input id="login-pass" type="password" autocomplete="current-password" placeholder="Senha" required />
         <button type="submit">Entrar no FT</button>
       </form>
       <div id="google-btn" class="google-slot"></div>
@@ -99,10 +106,14 @@
         <button id="settings-close" class="icon-btn" type="button">✕</button>
       </div>
       <div class="id-box">
-        <p class="admin-hint">Avisos, status e conta.</p>
-        <button id="set-notify" class="ghost-btn push-btn" type="button">Ativar notificações</button>
-        <button id="set-available" class="ghost-btn push-btn" type="button">Status: disponível</button>
+        <p class="admin-hint">Avisos, cor, som e conversas.</p>
+        <button id="set-notify" class="ghost-btn push-btn" type="button">Ativar avisos</button>
+        <label class="admin-hint" for="set-sound"><input id="set-sound" type="checkbox" /> Som de aviso</label>
+        <label for="set-color">Cor do seu nome</label>
+        <input id="set-color" type="color" value="#00a884" />
+        <button id="set-available" class="ghost-btn push-btn" type="button">Status: disponivel</button>
         <button id="set-away" class="ghost-btn push-btn" type="button">Status: ausente</button>
+        <button id="clear-chat" class="ghost-btn push-btn" type="button">Limpar conversas deste aparelho</button>
         <a class="ghost-link" href="/privacy.html">Privacidade</a>
         <a class="ghost-link" href="/termos.html">Termos</a>
       </div>
@@ -276,3 +287,4 @@
   <script src="/app.js"></script>
 </body>
 </html>
+

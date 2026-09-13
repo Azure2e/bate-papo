@@ -542,6 +542,8 @@
   }
 
   function renderSystem(msg) {
+    const t = String(msg?.text || "");
+    if (/entrou no chat|saiu do chat/i.test(t)) return;
     if (!msg?.id || rendered.has(msg.id)) return;
     rendered.add(msg.id);
     addDayIfNeeded(msg.createdAt);
@@ -2453,4 +2455,5 @@
   setOfflineUI();
   applyStatus(manualStatus, true);
 })();
+
 

@@ -973,7 +973,10 @@ class Hub:
             admin = bool(viewer) and viewer.lower() in self.admins
             rows = []
             for msg in reversed(self.messages):
-                if (msg.get("groupId") or DEFAULT_GROUP_ID) != gid:
+                                if (msg.get("groupId") or DEFAULT_GROUP_ID) != gid:
+                    continue
+                txt = str(msg.get("text") or "")
+                if msg.get("type") == "system" and ("entrou no chat" in txt or "saiu do chat" in txt):
                     continue
                 if not admin:
                     author = (msg.get("author") or "").lower()
@@ -2190,7 +2193,7 @@ class ChatHandler(BaseHTTPRequestHandler):
                 )
                 if not still:
                     HUB.mark_offline(user["name"], user.get("color"))
-                    system_message(f"{user['name']} saiu do chat")
+                    pass
                 broadcast({"op": "users", "users": HUB.presence_list()})
 
     def ws_loop(self, cid: str):
@@ -2312,7 +2315,7 @@ class ChatHandler(BaseHTTPRequestHandler):
             broadcast({"op": "pubkeys", "pubkeys": HUB.pubkeys_map()})
             if key_change:
                 broadcast({"op": "key_changed", **key_change})
-            system_message(f"{name} entrou no chat")
+            pass
             return
 
         if op == "pubkey":
@@ -2963,3 +2966,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ft-chat
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u server.py
+    envVars:
+      - key: PORT
+        sync: false
+      - key: ADMIN_CODE
+        value: admin123
+      - key: PYTHONUNBUFFERED
+        value: "1"

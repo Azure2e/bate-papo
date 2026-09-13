@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#202c33" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="FT Chat — mensagens, vídeo e grupos com criptografia E2E" />
+  <title>FT Chat</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <img src="/icons/icon-192.png" alt="FT" class="gate-logo" />
+      <p class="brand-kicker">FT</p>
+      <h1>FT Chat</h1>
+      <p>Bola no logo, chat rápido, rádio PTT/LoRa e criptografia E2E.</p>
+      <form id="join-form">
+        <label for="name-input">Seu nome</label>
+        <input id="name-input" maxlength="24" autocomplete="nickname" placeholder="Como você quer aparecer" required />
+        <button type="submit">Entrar no FT</button>
+      </form>
+      <div id="google-btn" class="google-slot"></div>
+      <a id="google-oauth-link" class="ghost-link hidden" href="/api/auth/google/start">Entrar com Google (OAuth)</a>
+      <button id="open-mobile" class="ghost-link" type="button">Abrir no celular</button>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <div id="offline-bar" class="offline-bar hidden">Sem internet — as mensagens ficam salvas e sobem sozinhas</div>
+    <div class="workspace">
+    <aside id="roster" class="roster">
+      <button type="button" id="home-btn" class="roster-home">← Início</button>
+      <p class="roster-label">Pessoas</p>
+      <ul id="roster-list"></ul>
+    </aside>
+    <div class="chat-col">
+    <header class="topbar">
+      <button id="back-btn" class="icon-btn" type="button" title="Voltar ao início">←</button>
+      <div class="topbar-avatar" id="room-avatar">FT</div>
+      <div class="topbar-meta">
+        <strong id="room-title">FT Chat</strong>
+        <span id="online-label">conectando…</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="people-btn" class="icon-btn" type="button" title="Contatos">👥</button>
+        <button id="more-btn" class="icon-btn" type="button" title="Mais">⋮</button>
+      </div>
+    </header>
+    <div id="more-menu" class="more-menu hidden">
+      <div class="people-head">
+        <strong>Menu</strong>
+        <button id="menu-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <button id="notify-btn" type="button">Ativar avisos</button>
+      <button id="install-btn" class="hidden" type="button">Instalar app</button>
+      <button id="chats-btn" type="button">Conversas</button>
+      <button id="profile-btn" type="button">Perfil</button>
+      <button id="settings-btn" type="button">Configurações</button>
+      <button id="groups-btn" type="button">Grupos</button>
+      <button id="shell-btn" type="button">Shell do sistema</button>
+      <button id="id-btn" type="button">Identidade</button>
+      <button id="admin-btn" type="button">Administração <span id="alert-badge" class="alert-badge hidden">0</span></button>
+    </div>
+
+    <aside id="page-chats" class="people hidden">
+      <div class="people-head">
+        <strong>Conversas</strong>
+        <button id="chats-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <button id="chats-home" class="ghost-btn push-btn" type="button">Chat aberto</button>
+      <ul id="chats-list"></ul>
+    </aside>
+    <aside id="page-profile" class="people hidden">
+      <div class="people-head">
+        <strong>Editar perfil</strong>
+        <button id="profile-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <div class="id-box profile-edit">
+        <img id="profile-photo" class="profile-photo" alt="foto" src="/icons/icon-192.png" />
+        <p id="profile-name" class="admin-hint">—</p>
+        <label class="ghost-btn push-btn">
+          Escolher foto
+          <input id="profile-file" type="file" accept="image/*" hidden />
+        </label>
+        <label for="profile-bio">Recado</label>
+        <input id="profile-bio" maxlength="80" placeholder="Disponível no FT" />
+        <button id="profile-save" class="ghost-btn push-btn" type="button">Atualizar perfil</button>
+      </div>
+    </aside>
+    <aside id="page-settings" class="people hidden">
+      <div class="people-head">
+        <strong>Configurações</strong>
+        <button id="settings-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <div class="id-box">
+        <p class="admin-hint">Avisos, status e conta.</p>
+        <button id="set-notify" class="ghost-btn push-btn" type="button">Ativar notificações</button>
+        <button id="set-available" class="ghost-btn push-btn" type="button">Status: disponível</button>
+        <button id="set-away" class="ghost-btn push-btn" type="button">Status: ausente</button>
+        <a class="ghost-link" href="/privacy.html">Privacidade</a>
+        <a class="ghost-link" href="/termos.html">Termos</a>
+      </div>
+    </aside>
+    <aside id="sys-shell" class="people hidden">
+      <div class="people-head">
+        <strong>Shell FT</strong>
+        <button id="shell-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <p class="admin-hint">Comandos do app. Não é terminal do servidor.</p>
+      <pre id="shell-out" class="fp-code">digite /help</pre>
+      <form id="shell-form" class="admin-auth">
+        <input id="shell-in" maxlength="200" placeholder="/help" autocomplete="off" />
+        <button type="submit">Executar</button>
+      </form>
+    </aside>
+    <aside id="identity" class="people hidden">
+      <div class="people-head">
+        <strong>Identidade E2E</strong>
+        <button id="id-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <div class="id-box">
+        <p class="admin-hint">Sua chave privada fica só neste aparelho (IndexedDB). Compare o código com a outra pessoa por um canal seguro.</p>
+        <label>Sua impressão digital</label>
+        <pre id="my-fp" class="fp-code">gerando…</pre>
+        <button id="copy-fp" class="ghost-btn push-btn" type="button">Copiar meu código</button>
+      </div>
+      <ul id="id-list"></ul>
+    </aside>
+
+    <aside id="groups" class="people hidden">
+      <div class="people-head">
+        <strong>Grupos</strong>
+        <button id="groups-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <form id="group-form" class="admin-auth">
+        <label for="group-name">Novo grupo</label>
+        <input id="group-name" maxlength="40" placeholder="Nome do grupo" />
+        <button type="submit">Criar grupo privado</button>
+      </form>
+      <form id="member-form" class="admin-auth">
+        <label for="member-name">Adicionar membro no grupo atual</label>
+        <input id="member-name" maxlength="24" placeholder="Nome da pessoa" />
+        <button type="submit">Adicionar</button>
+      </form>
+      <p class="admin-hint" id="e2e-hint">🔒 Mensagens com criptografia ponta a ponta. O servidor não lê o texto.</p>
+      <button id="leave-group" class="ghost-btn push-btn" type="button">Sair do grupo</button>
+      <ul id="groups-list"></ul>
+    </aside>
+
+    <aside id="people" class="people hidden">
+      <div class="people-head">
+        <strong>Disponibilidade</strong>
+        <button id="people-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <div class="status-pick" id="status-pick">
+        <button type="button" data-status="available" class="on">Disponível</button>
+        <button type="button" data-status="away">Ausente</button>
+        <button type="button" data-status="busy">Ocupado</button>
+      </div>
+      <div class="id-box">
+        <p class="admin-hint">Módulo de segurança: você controla se o admin pode ver sua localização ao vivo.</p>
+        <button id="loc-share" class="ghost-btn push-btn" type="button">Compartilhar minha localização (15 min)</button>
+        <button id="loc-stop" class="ghost-btn push-btn hidden" type="button">Parar localização</button>
+      </div>
+      <ul id="people-list"></ul>
+    </aside>
+
+    <aside id="admin" class="people admin-panel hidden">
+      <div class="people-head">
+        <strong>Administração</strong>
+        <button id="admin-close" class="icon-btn" type="button">✕</button>
+      </div>
+      <form id="admin-auth" class="admin-auth">
+        <label for="admin-code">Código de administrador</label>
+        <input id="admin-code" type="password" placeholder="Digite o código" autocomplete="off" />
+        <button type="submit">Entrar como admin</button>
+      </form>
+      <div id="admin-tools" class="admin-tools hidden">
+        <p class="admin-hint">Silenciar impede enviar. Bloquear esconde e impede enviar. Banir tira da sala.</p>
+        <button id="push-btn" class="ghost-btn push-btn" type="button">Ativar notificações push</button>
+        <div class="admin-logs">
+          <div class="logs-head">
+            <strong>Segurança das sessões</strong>
+            <button id="sessions-refresh" class="ghost-btn" type="button">Atualizar</button>
+          </div>
+          <p class="admin-hint">IP e aparelho de quem está conectado. Localização só aparece se a pessoa ligar o compartilhamento.</p>
+          <ul id="session-list"></ul>
+        </div>
+        <ul id="admin-list"></ul>
+        <div class="admin-logs">
+          <div class="logs-head">
+            <strong>Logs de moderação</strong>
+            <button id="logs-refresh" class="ghost-btn" type="button">Atualizar</button>
+          </div>
+          <ul id="admin-log-list"></ul>
+        </div>
+      </div>
+    </aside>
+
+    <div id="alert-stack" class="alert-stack" aria-live="assertive"></div>
+    <main id="thread" class="thread" aria-live="polite"></main>
+
+    <div id="typing" class="typing hidden"></div>
+
+    <div id="preview" class="preview hidden">
+      <div class="preview-card">
+        <button id="preview-close" class="preview-x" type="button">✕</button>
+        <video id="preview-video" controls playsinline></video>
+        <img id="preview-image" alt="Prévia" />
+        <div class="preview-actions">
+          <input id="caption" maxlength="2000" placeholder="Escreva uma mensagem…" />
+          <button id="preview-send" type="button">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="reply-bar" class="reply-bar hidden">
+      <div>
+        <strong id="reply-name"></strong>
+        <span id="reply-text"></span>
+      </div>
+      <button id="reply-cancel" type="button">✕</button>
+    </div>
+
+    <form id="composer" class="composer">
+      <button id="emoji-btn" class="icon-btn smile" type="button" title="Emoji">😊</button>
+      <div class="composer-field">
+        <textarea id="text-input" rows="1" maxlength="2000" placeholder="Mensagem"></textarea>
+        <label class="attach" title="Enviar vídeo ou imagem">
+          📎
+          <input id="file-input" type="file" accept="video/*,image/*" hidden />
+        </label>
+      </div>
+      <button id="radio-btn" class="icon-btn smile" type="button" title="Rádio / PTT">📻</button>
+      <button id="send-btn" type="submit" title="Enviar">➤</button>
+    </form>
+    <div id="emoji-panel" class="emoji-panel hidden"></div>
+    </div>
+    </div>
+  </div>
+
+  <div id="radio-sheet" class="sheet hidden">
+    <div class="sheet-card">
+      <button id="radio-close" class="preview-x" type="button">✕</button>
+      <h3>Sem internet</h3>
+      <p class="admin-hint">Deseja mandar via rádio?</p>
+      <p id="radio-preview" class="admin-hint"></p>
+      <button id="radio-ptt" class="ghost-btn push-btn" type="button">Via PTT (microfone)</button>
+      <button id="radio-lora" class="ghost-btn push-btn" type="button">Via LoRa (gateway)</button>
+      <button id="radio-wait" class="ghost-btn push-btn" type="button">Esperar a internet</button>
+    </div>
+  </div>
+  <div id="mobile-sheet" class="sheet hidden">
+    <div class="sheet-card">
+      <button id="sheet-close" class="preview-x" type="button">✕</button>
+      <img src="/icons/icon-192.png" alt="FT" class="gate-logo" />
+      <h2>Abrir no celular</h2>
+      <ol class="sheet-steps">
+        <li>No telefone, abra o mesmo endereço deste chat.</li>
+        <li>No Chrome ou Safari toque em <strong>Compartilhar</strong> ou no menu.</li>
+        <li>Escolha <strong>Adicionar à tela inicial</strong>.</li>
+        <li>O ícone FT abre como aplicativo, em tela cheia.</li>
+      </ol>
+      <p id="sheet-url" class="sheet-url"></p>
+      <button id="sheet-copy" class="primary-btn" type="button">Copiar link</button>
+      <button id="sheet-install" class="ghost-btn" type="button">Instalar neste aparelho</button>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -973,7 +973,7 @@ class Hub:
             admin = bool(viewer) and viewer.lower() in self.admins
             rows = []
             for msg in reversed(self.messages):
-                                if (msg.get("groupId") or DEFAULT_GROUP_ID) != gid:
+                if (msg.get("groupId") or DEFAULT_GROUP_ID) != gid:
                     continue
                 txt = str(msg.get("text") or "")
                 if msg.get("type") == "system" and ("entrou no chat" in txt or "saiu do chat" in txt):
@@ -2966,4 +2966,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 

@@ -995,3 +995,12 @@ body { overflow: hidden; }
 
 .more-menu:not(.hidden){position:absolute;inset:0;width:100%!important;top:0!important;right:0!important;background:#0b141a;z-index:40;border-radius:0;box-shadow:none;padding:calc(8px + var(--safe-top)) 0 24px}
 .more-menu:not(.hidden) ~ .thread,.more-menu:not(.hidden) ~ .composer,.more-menu:not(.hidden) ~ .typing,.more-menu:not(.hidden) ~ .preview{display:none!important}
+
+.gate { min-height: 100dvh; overflow: auto; padding: 16px; }
+.gate-card { width: min(420px, 100%); }
+.google-slot { display: flex; justify-content: center; width: 100%; margin-top: 12px; }
+#google-oauth-link.hidden { display: none !important; }
+#google-oauth-link { display: block; width: 100%; text-align: center; margin-top: 10px; }
+@media (max-width: 760px) {
+  .gate-card { width: 100%; border-radius: 18px; padding: 20px 14px; }
+}

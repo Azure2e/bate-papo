@@ -1860,7 +1860,7 @@
   })();
 
   fetch("/api/config").then((r) => r.json()).then((cfg) => {
-    if (cfg?.googleOAuth) $("google-oauth-link")?.classList.remove("hidden");
+    if (cfg?.google || cfg?.googleOAuth || cfg?.googleClientId) { $("google-oauth-link")?.classList.remove("hidden"); }
     if (!cfg?.googleClientId || !$("google-btn")) return;
     const s = document.createElement("script");
     s.src = "https://accounts.google.com/gsi/client";
@@ -2453,3 +2453,4 @@
   setOfflineUI();
   applyStatus(manualStatus, true);
 })();
+
